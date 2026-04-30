@@ -1,0 +1,65 @@
+[2026-04-03T08:34:33.699Z] Starting dev server with command: pnpm run dev
+[2026-04-03T08:34:34.618Z] 
+[2026-04-03T08:34:34.619Z] > dequan-website@1.0.0 dev /home/ubuntu/dequan-website
+[2026-04-03T08:34:34.619Z] > vite --host
+[2026-04-03T08:34:34.619Z] 
+[2026-04-03T08:34:35.241Z] 
+[2026-04-03T08:34:35.241Z] VITE v7.1.9  ready in 577 ms
+[2026-04-03T08:34:35.242Z] 
+[2026-04-03T08:34:35.242Z] ➜  Local:   http://localhost:3000/
+[2026-04-03T08:34:35.243Z] ➜  Network: http://169.254.0.21:3000/
+[2026-04-03T08:36:03.754Z] 4:36:03 AM [vite] (client) page reload index.html
+[2026-04-03T08:38:08.078Z] Dev server process group stopped
+[2026-04-03T08:38:08.081Z] ELIFECYCLE  Command failed.
+[2026-04-03T08:38:08.102Z] Dev server exited with code -15
+[2026-04-03T08:38:11.096Z] Starting dev server with command: pnpm run dev
+[2026-04-03T08:38:11.860Z] 
+[2026-04-03T08:38:11.861Z] > dequan-website@1.0.0 dev /home/ubuntu/dequan-website
+[2026-04-03T08:38:11.861Z] > vite --host
+[2026-04-03T08:38:11.861Z] 
+[2026-04-03T08:38:12.282Z] 
+[2026-04-03T08:38:12.282Z] VITE v7.1.9  ready in 375 ms
+[2026-04-03T08:38:12.283Z] 
+[2026-04-03T08:38:12.283Z] ➜  Local:   http://localhost:3000/
+[2026-04-03T08:38:12.284Z] ➜  Network: http://169.254.0.21:3000/
+[2026-04-03T08:38:13.555Z] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[2026-04-03T08:38:13.833Z] 4:38:13 AM [vite] Internal server error: Cannot apply unknown utility class `bg-brand-teal`
+[2026-04-03T08:38:13.833Z] Plugin: @tailwindcss/vite:generate:serve
+[2026-04-03T08:38:13.834Z] File: /home/ubuntu/dequan-website/client/src/index.css
+[2026-04-03T08:38:13.834Z] at onInvalidCandidate (file:///home/ubuntu/dequan-website/node_modules/.pnpm/tailwindcss@4.1.14/node_modules/tailwindcss/dist/chunk-MC3TVECV.mjs:18:1529)
+[2026-04-03T08:38:13.834Z] at pe (file:///home/ubuntu/dequan-website/node_modules/.pnpm/tailwindcss@4.1.14/node_modules/tailwindcss/dist/chunk-MC3TVECV.mjs:13:30343)
+[2026-04-03T08:38:13.834Z] at file:///home/ubuntu/dequan-website/node_modules/.pnpm/tailwindcss@4.1.14/node_modules/tailwindcss/dist/chunk-MC3TVECV.mjs:18:373
+[2026-04-03T08:38:13.835Z] at j (file:///home/ubuntu/dequan-website/node_modules/.pnpm/tailwindcss@4.1.14/node_modules/tailwindcss/dist/chunk-MC3TVECV.mjs:3:1656)
+[2026-04-03T08:38:13.835Z] at Ke (file:///home/ubuntu/dequan-website/node_modules/.pnpm/tailwindcss@4.1.14/node_modules/tailwindcss/dist/chunk-MC3TVECV.mjs:18:172)
+[2026-04-03T08:38:13.835Z] at ii (file:///home/ubuntu/dequan-website/node_modules/.pnpm/tailwindcss@4.1.14/node_modules/tailwindcss/dist/chunk-MC3TVECV.mjs:37:294)
+[2026-04-03T08:38:13.835Z] at async vn (file:///home/ubuntu/dequan-website/node_modules/.pnpm/tailwindcss@4.1.14/node_modules/tailwindcss/dist/chunk-MC3TVECV.mjs:37:637)
+[2026-04-03T08:38:13.836Z] at async Ol (file:///home/ubuntu/dequan-website/node_modules/.pnpm/tailwindcss@4.1.14/node_modules/tailwindcss/dist/chunk-MC3TVECV.mjs:37:1412)
+[2026-04-03T08:38:13.836Z] at async Ka (file:///home/ubuntu/dequan-website/node_modules/.pnpm/@tailwindcss+node@4.1.14/node_modules/@tailwindcss/node/dist/index.mjs:10:3433)
+[2026-04-03T08:38:13.836Z] at async C.generate (file:///home/ubuntu/dequan-website/node_modules/.pnpm/@tailwindcss+vite@4.1.14_vite@7.1.9_@types+node@24.7.0_jiti@2.6.1_lightningcss@1.30.1_tsx@4.20.6_/node_modules/@tailwindcss/vite/dist/index.mjs:1:3571)
+[2026-04-03T08:38:13.836Z] at async TransformPluginContext.transform (file:///home/ubuntu/dequan-website/node_modules/.pnpm/@tailwindcss+vite@4.1.14_vite@7.1.9_@types+node@24.7.0_jiti@2.6.1_lightningcss@1.30.1_tsx@4.20.6_/node_modules/@tailwindcss/vite/dist/index.mjs:1:1949)
+[2026-04-03T08:38:13.837Z] at async EnvironmentPluginContainer.transform (file:///home/ubuntu/dequan-website/node_modules/.pnpm/vite@7.1.9_@types+node@24.7.0_jiti@2.6.1_lightningcss@1.30.1_tsx@4.20.6/node_modules/vite/dist/node/chunks/dep-Chhhsdoe.js:31018:14)
+[2026-04-03T08:38:13.837Z] at async loadAndTransform (file:///home/ubuntu/dequan-website/node_modules/.pnpm/vite@7.1.9_@types+node@24.7.0_jiti@2.6.1_lightningcss@1.30.1_tsx@4.20.6/node_modules/vite/dist/node/chunks/dep-Chhhsdoe.js:26143:26)
+[2026-04-03T08:38:13.837Z] 4:38:13 AM [vite] (client) Pre-transform error: Cannot apply unknown utility class `bg-brand-teal`
+[2026-04-03T08:38:13.837Z] Plugin: @tailwindcss/vite:generate:serve
+[2026-04-03T08:38:13.838Z] File: /home/ubuntu/dequan-website/client/src/index.css
+[2026-04-03T08:39:10.057Z] 4:39:10 AM [vite] (client) hmr update /src/components/Header.tsx
+[2026-04-03T08:39:25.682Z] 4:39:25 AM [vite] (client) hmr update /src/components/HeroSection.tsx
+[2026-04-03T08:39:39.460Z] 4:39:39 AM [vite] (client) hmr update /src/components/AboutSection.tsx
+[2026-04-03T08:39:53.816Z] 4:39:53 AM [vite] (client) hmr update /src/components/ServicesSection.tsx
+[2026-04-03T08:40:13.116Z] 4:40:13 AM [vite] (client) hmr update /src/components/ContactSection.tsx
+[2026-04-03T08:40:24.807Z] 4:40:24 AM [vite] (client) hmr update /src/components/ContactSection.tsx
+[2026-04-03T08:40:46.897Z] 4:40:46 AM [vite] (client) hmr update /src/components/Footer.tsx
+[2026-04-03T08:41:07.189Z] Dev server process group stopped
+[2026-04-03T08:41:07.192Z] ELIFECYCLE  Command failed.
+[2026-04-03T08:41:07.205Z] Dev server exited with code -15
+[2026-04-03T08:41:10.204Z] Starting dev server with command: pnpm run dev
+[2026-04-03T08:41:11.015Z] 
+[2026-04-03T08:41:11.016Z] > dequan-website@1.0.0 dev /home/ubuntu/dequan-website
+[2026-04-03T08:41:11.016Z] > vite --host
+[2026-04-03T08:41:11.017Z] 
+[2026-04-03T08:41:11.461Z] 
+[2026-04-03T08:41:11.462Z] VITE v7.1.9  ready in 397 ms
+[2026-04-03T08:41:11.462Z] 
+[2026-04-03T08:41:11.462Z] ➜  Local:   http://localhost:3000/
+[2026-04-03T08:41:11.463Z] ➜  Network: http://169.254.0.21:3000/
+[2026-04-03T08:41:12.496Z] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`

@@ -1,0 +1,78 @@
+import { Mail, Phone } from 'lucide-react';
+import { LineIcon } from './LineIcon';
+
+export default function Footer() {
+
+  return (
+    <footer style={{ backgroundColor: '#2C3E50', color: 'white' }}>
+      <div className="container section-spacing">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+          <div>
+            <h3 className="text-xl font-semibold mb-4" style={{ color: '#F5A623' }}>德全有限公司</h3>
+            <p className="text-sm" style={{ color: '#9CA3AF' }}>DEQUAN-M CO.LTD</p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold mb-4" style={{ color: '#F5A623' }}>快速連結</h3>
+            <ul className="space-y-2">
+              <li>
+                <a href="#" className="transition-colors" style={{ color: '#D1D5DB' }} onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#D1D5DB'}>
+                  首頁
+                </a>
+              </li>
+              <li>
+                <a href="#about" className="transition-colors" style={{ color: '#D1D5DB' }} onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#D1D5DB'}>
+                  關於我們
+                </a>
+              </li>
+              <li>
+                <a href="#services" className="transition-colors" style={{ color: '#D1D5DB' }} onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#D1D5DB'}>
+                  服務項目
+                </a>
+              </li>
+              <li>
+                <a href="#contact" className="transition-colors" style={{ color: '#D1D5DB' }} onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#D1D5DB'}>
+                  聯絡我們
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold mb-4" style={{ color: '#F5A623' }}>聯絡方式</h3>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <Phone className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: '#F5A623' }} />
+                <span style={{ color: '#D1D5DB' }}>0930137329</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <Mail className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: '#F5A623' }} />
+                <a href="mailto:ginji7579@gmail.com" className="transition-colors" style={{ color: '#D1D5DB' }} onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#D1D5DB'}>
+                  ginji7579@gmail.com
+                </a>
+              </div>
+              <div className="flex items-start gap-3">
+                <LineIcon className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: '#F5A623' }} />
+                <span style={{ color: '#D1D5DB' }}>ginji7579</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ borderTop: '1px solid #4B5563', paddingTop: '2rem' }}>
+          <div className="flex flex-col md:flex-row justify-between items-center text-sm" style={{ color: '#9CA3AF' }}>
+            <p>&copy; 德全有限公司 (DEQUAN-M CO.LTD). 版權所有。</p>
+            <div className="flex gap-6 mt-4 md:mt-0">
+              <a href="#" className="transition-colors" onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#9CA3AF'}>
+                隱私政策
+              </a>
+              <a href="#" className="transition-colors" onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#9CA3AF'}>
+                服務條款
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
