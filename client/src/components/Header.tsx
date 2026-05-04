@@ -47,6 +47,17 @@ export default function Header() {
                 {link.label}
               </a>
             ))}
+            {isAuthenticated && (
+              <a
+                href="/admin"
+                className="font-medium transition-colors duration-300"
+                style={{ color: '#2C3E50' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#2B8A8A'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#2C3E50'}
+              >
+                管理後台
+              </a>
+            )}
           </nav>
 
           <div className="flex items-center gap-3">
@@ -117,39 +128,41 @@ export default function Header() {
                 {link.label}
               </a>
             ))}
-            
-            {/* Mobile Auth Links */}
-            <div className="border-t border-[#E8E6E1] mt-2 pt-2">
-              {isAuthenticated ? (
-                <>
-                  <div className="px-4 py-3 text-sm font-medium flex items-center gap-2" style={{ color: '#2C3E50' }}>
-                    <UserIcon className="w-4 h-4" />
-                    <span>{user?.name}</span>
-                  </div>
-                  <button
-                    onClick={() => {
-                      logout();
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full text-left px-4 py-3 text-sm font-medium text-red-500 hover:bg-red-50 transition-colors flex items-center gap-2"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    <span>登出</span>
-                  </button>
-                </>
-              ) : (
-                <Link href="/login">
-                  <a 
-                    className="block px-4 py-3 text-sm font-medium transition-colors flex items-center gap-2" 
-                    style={{ color: '#2B8A8A' }}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <UserIcon className="w-4 h-4" />
-                    <span>會員登入 / 註冊</span>
-                  </a>
-                </Link>
-              )}
-            </div>
+            {isAuthenticated ? (
+              <>
+                <a
+                  href="/admin"
+                  className="block px-4 py-3 font-medium transition-colors"
+                  style={{ color: '#2C3E50' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#F5F1E8'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  管理後台
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    logout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full text-left block px-4 py-3 text-sm font-medium text-red-500 transition-colors hover:bg-[#F5F1E8]"
+                >
+                  登出
+                </button>
+              </>
+            ) : (
+              <Link href="/login">
+                <a
+                  className="block px-4 py-3 text-sm font-medium transition-colors flex items-center gap-2"
+                  style={{ color: '#2B8A8A' }}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <UserIcon className="w-4 h-4" />
+                  <span>會員登入 / 註冊</span>
+                </a>
+              </Link>
+            )}
           </nav>
         )}
       </div>

@@ -17,7 +17,7 @@ export default function Login() {
 
     try {
       await login(email, password);
-      setLocation('/');
+      setLocation('/admin');
     } catch (err: any) {
       setError(err.message || '登入失敗，請稍後再試');
     }
