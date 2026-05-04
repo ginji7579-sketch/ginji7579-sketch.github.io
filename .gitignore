@@ -3,3 +3,6 @@ node_modules/
 dist/
 .env
 client/src/lib/.env.local
+
+# Debug / local telemetry — may contain tokens, PII, API traffic
+.manus-logs/
