@@ -1,4 +1,4 @@
-import { BarChart3, FileText, Globe, Package, Truck, Users } from 'lucide-react';
+import { IdCard, Palette, Megaphone, Heart, Star, Newspaper, Mic2, Share2, Target } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { serviceCatalog, type ServiceCatalogItem } from '@shared/services';
 
@@ -9,46 +9,46 @@ export type ServiceItem = ServiceCatalogItem & {
 export const services: ServiceItem[] = [
   {
     ...serviceCatalog[0],
-    icon: Package,
+    icon: IdCard,
   },
   {
     ...serviceCatalog[1],
-    icon: Globe,
+    icon: Palette,
   },
   {
     ...serviceCatalog[2],
-    icon: FileText,
+    icon: Megaphone,
   },
   {
     ...serviceCatalog[3],
-    icon: Truck,
+    icon: Heart,
   },
   {
     ...serviceCatalog[4],
-    icon: BarChart3,
+    icon: Star,
   },
   {
     ...serviceCatalog[5],
-    icon: Users,
+    icon: Newspaper,
   },
   {
     ...serviceCatalog[6],
-    icon: Package,
+    icon: Mic2,
   },
   {
     ...serviceCatalog[7],
-    icon: Globe,
+    icon: Share2,
   },
   {
     ...serviceCatalog[8],
-    icon: FileText,
+    icon: Target,
   },
   {
     ...serviceCatalog[9],
-    icon: Globe,
+    icon: Heart,
   },
   {
     ...serviceCatalog[10],
-    icon: FileText,
+    icon: Star,
   },
 ];

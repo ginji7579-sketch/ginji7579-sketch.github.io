@@ -59,7 +59,7 @@ export const serviceCatalog: ServiceCatalogItem[] = [
   },
   {
     id: 'grant-plan',
-    title: '政府補助計計畫',
+    title: '政府補助計畫',
     description: '依據客人需求報價',
   },
   {

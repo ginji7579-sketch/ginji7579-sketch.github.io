@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
-import { Menu, ShoppingCart, X } from 'lucide-react';
+import { Menu, ShoppingCart, X, User as UserIcon, LogOut } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { openCart, totalQuantity } = useCart();
+  const { user, logout, isAuthenticated } = useAuth();
 
   const navLinks = [
     { label: '首頁', href: '/' },
@@ -48,6 +50,29 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
+            {isAuthenticated ? (
+              <div className="hidden md:flex items-center gap-3 mr-2">
+                <div className="flex items-center gap-2 text-sm font-medium" style={{ color: '#2C3E50' }}>
+                  <UserIcon className="w-4 h-4" />
+                  <span>{user?.name}</span>
+                </div>
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-1 text-sm font-medium text-red-500 hover:text-red-600 transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>登出</span>
+                </button>
+              </div>
+            ) : (
+              <Link href="/login">
+                <a className="hidden md:flex items-center gap-2 text-sm font-medium transition-colors px-3 py-2 rounded-lg hover:bg-[#E8E6E1]" style={{ color: '#2B8A8A', backgroundColor: '#F5F1E8' }}>
+                  <UserIcon className="w-4 h-4" />
+                  <span>登入 / 註冊</span>
+                </a>
+              </Link>
+            )}
+
             <button
               className="relative inline-flex h-11 w-11 items-center justify-center rounded-lg transition-colors"
               style={{ backgroundColor: '#F5F1E8' }}
@@ -92,6 +117,39 @@ export default function Header() {
                 {link.label}
               </a>
             ))}
+            
+            {/* Mobile Auth Links */}
+            <div className="border-t border-[#E8E6E1] mt-2 pt-2">
+              {isAuthenticated ? (
+                <>
+                  <div className="px-4 py-3 text-sm font-medium flex items-center gap-2" style={{ color: '#2C3E50' }}>
+                    <UserIcon className="w-4 h-4" />
+                    <span>{user?.name}</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-3 text-sm font-medium text-red-500 hover:bg-red-50 transition-colors flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>登出</span>
+                  </button>
+                </>
+              ) : (
+                <Link href="/login">
+                  <a 
+                    className="block px-4 py-3 text-sm font-medium transition-colors flex items-center gap-2" 
+                    style={{ color: '#2B8A8A' }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <UserIcon className="w-4 h-4" />
+                    <span>會員登入 / 註冊</span>
+                  </a>
+                </Link>
+              )}
+            </div>
           </nav>
         )}
       </div>

@@ -1,5 +1,6 @@
-import { Mail, Phone, Send } from 'lucide-react';
+import { Mail, Phone, Send, MapPin } from 'lucide-react';
 import { LineIcon } from './LineIcon';
+import { WeChatIcon } from './WeChatIcon';
 import { useState } from 'react';
 
 export default function ContactSection() {
@@ -13,6 +14,8 @@ export default function ContactSection() {
 
   const [submitted, setSubmitted] = useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -21,14 +24,35 @@ export default function ContactSection() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-    }, 3000);
+    setIsSubmitting(true);
+    
+    try {
+      // 使用 formsubmit.co 免費轉寄服務
+      await fetch('https://formsubmit.co/ajax/ginji7579@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `網站聯絡表單: ${formData.subject}`,
+          ...formData
+        })
+      });
+
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      }, 3000);
+    } catch (error) {
+      console.error('發送失敗', error);
+      alert('發生錯誤，無法發送消息。請直接點擊上方 mail 聯絡我們。');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -48,6 +72,18 @@ export default function ContactSection() {
       icon: LineIcon,
       label: 'line',
       value: 'ginji7579',
+      href: '#',
+    },
+    {
+      icon: WeChatIcon,
+      label: 'wechat',
+      value: 'ginji7579',
+      href: '#',
+    },
+    {
+      icon: MapPin,
+      label: '地址',
+      value: '台北市信義區松德路65號11樓之2',
       href: '#',
     },
   ];
@@ -201,9 +237,10 @@ export default function ContactSection() {
 
               <button
                 type="submit"
-                className="w-full btn-primary justify-center hover:shadow-lg transition-all duration-300"
+                disabled={isSubmitting}
+                className={`w-full btn-primary justify-center hover:shadow-lg transition-all duration-300 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
               >
-                發送消息
+                {isSubmitting ? '發送中...' : '發送消息'}
                 <Send className="w-5 h-5" />
               </button>
             </form>
