@@ -26,8 +26,10 @@ export default function Login() {
   const handleGoogleLogin = async () => {
     setError('');
     try {
-      // signInWithRedirect 會整頁離開，回來後由 AuthContext 依 sessionStorage 導向 /admin
-      await loginWithGoogle('/admin');
+      const mode = await loginWithGoogle('/admin');
+      if (mode === 'popup') {
+        setLocation('/admin');
+      }
     } catch (err: any) {
       setError(err.message || 'Google 登入失敗，請稍後再試');
     }

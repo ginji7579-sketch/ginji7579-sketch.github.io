@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
   GoogleAuthProvider,
@@ -127,7 +128,8 @@ interface AuthContextType {
   user: User | null;
   signup: (email: string, password: string) => Promise<any>;
   login: (email: string, password: string) => Promise<any>;
-  loginWithGoogle: (returnTo?: string) => Promise<void>;
+  /** 'popup' 時呼叫端可安全 setLocation；'redirect' 時整頁將離開，由 consume 標記導向 */
+  loginWithGoogle: (returnTo?: string) => Promise<'popup' | 'redirect'>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
@@ -146,10 +148,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const loginWithGoogle = (returnTo: string = '/admin') => {
-    persistGoogleReturnPath(returnTo);
+  const loginWithGoogle = async (returnTo: string = '/admin') => {
     const provider = new GoogleAuthProvider();
-    return signInWithRedirect(auth, provider);
+    try {
+      await signInWithPopup(auth, provider);
+      clearGoogleReturnMarkers();
+      return 'popup' as const;
+    } catch (e: unknown) {
+      const code =
+        e && typeof e === "object" && "code" in e
+          ? String((e as { code: string }).code)
+          : "";
+      if (
+        code === "auth/popup-blocked" ||
+        code === "auth/operation-not-supported-in-this-environment"
+      ) {
+        persistGoogleReturnPath(returnTo);
+        await signInWithRedirect(auth, provider);
+        return "redirect" as const;
+      }
+      throw e;
+    }
   };
 
   const logout = () => {
