@@ -12,12 +12,115 @@ import {
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 
-/** Google redirect 回來後整頁重載，不能用 React state 導向；用 sessionStorage 記目標路徑。 */
-const GOOGLE_RETURN_PATH_KEY = 'dequan_google_auth_return_path';
+/**
+ * Google OAuth 會經多個網域再回 dequan-m.vercel.app；僅用 sessionStorage 時，
+ * 部分 Safari／行動版會讀不到先前寫入的值。改為 session + local + 第一方 Cookie 三重備援。
+ */
+const GOOGLE_RETURN_KEY = 'dequan_google_auth_return';
+const COOKIE_NAME = 'dequan_oauth_ret';
+const RETURN_TTL_MS = 12 * 60 * 1000;
+
+type ReturnPayload = { path: string; exp: number };
 
 function safeInternalPath(path: string, fallback: string) {
   if (!path.startsWith('/') || path.startsWith('//')) return fallback;
   return path;
+}
+
+function encodePayload(path: string): string {
+  const payload: ReturnPayload = {
+    path: safeInternalPath(path, '/admin'),
+    exp: Date.now() + RETURN_TTL_MS,
+  };
+  return JSON.stringify(payload);
+}
+
+function decodePayload(raw: string | null): string | null {
+  if (!raw) return null;
+  try {
+    const data = JSON.parse(raw) as ReturnPayload;
+    if (typeof data?.path !== 'string' || typeof data?.exp !== 'number') return null;
+    if (Date.now() > data.exp) return null;
+    return safeInternalPath(data.path, '/admin');
+  } catch {
+    return safeInternalPath(raw, '/admin');
+  }
+}
+
+function persistGoogleReturnPath(path: string) {
+  const encoded = encodePayload(path);
+  try {
+    sessionStorage.setItem(GOOGLE_RETURN_KEY, encoded);
+  } catch {
+    /* ignore */
+  }
+  try {
+    localStorage.setItem(GOOGLE_RETURN_KEY, encoded);
+  } catch {
+    /* ignore */
+  }
+  const secure = typeof location !== 'undefined' && location.protocol === 'https:' ? '; Secure' : '';
+  try {
+    document.cookie = `${COOKIE_NAME}=${encodeURIComponent(encoded)}; Path=/; Max-Age=720; SameSite=Lax${secure}`;
+  } catch {
+    /* ignore */
+  }
+}
+
+function readRawGoogleReturn(): string | null {
+  try {
+    const s = sessionStorage.getItem(GOOGLE_RETURN_KEY);
+    if (s) return s;
+  } catch {
+    /* ignore */
+  }
+  try {
+    const l = localStorage.getItem(GOOGLE_RETURN_KEY);
+    if (l) return l;
+  } catch {
+    /* ignore */
+  }
+  try {
+    const m = document.cookie.match(new RegExp(`(?:^|; )${COOKIE_NAME}=([^;]*)`));
+    if (m?.[1]) return decodeURIComponent(m[1]);
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
+function clearGoogleReturnMarkers() {
+  try {
+    sessionStorage.removeItem(GOOGLE_RETURN_KEY);
+  } catch {
+    /* ignore */
+  }
+  try {
+    localStorage.removeItem(GOOGLE_RETURN_KEY);
+  } catch {
+    /* ignore */
+  }
+  const secure = typeof location !== 'undefined' && location.protocol === 'https:' ? '; Secure' : '';
+  try {
+    document.cookie = `${COOKIE_NAME}=; Path=/; Max-Age=0; SameSite=Lax${secure}`;
+  } catch {
+    /* ignore */
+  }
+}
+
+/** 已登入且曾點過 Google 登入時，消費標記並導向（Cookie／storage 擇一可讀即可） */
+function consumeGoogleReturnIfSignedIn(currentUser: User | null) {
+  if (!currentUser) return;
+  const raw = readRawGoogleReturn();
+  const dest = decodePayload(raw);
+  if (!dest) {
+    if (raw) clearGoogleReturnMarkers();
+    return;
+  }
+  clearGoogleReturnMarkers();
+  if (window.location.pathname !== dest) {
+    window.location.replace(dest);
+  }
 }
 
 interface AuthContextType {
@@ -44,14 +147,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const loginWithGoogle = (returnTo: string = '/admin') => {
-    const path = safeInternalPath(returnTo, '/admin');
-    sessionStorage.setItem(GOOGLE_RETURN_PATH_KEY, path);
+    persistGoogleReturnPath(returnTo);
     const provider = new GoogleAuthProvider();
     return signInWithRedirect(auth, provider);
   };
 
   const logout = () => {
-    sessionStorage.removeItem(GOOGLE_RETURN_PATH_KEY);
+    clearGoogleReturnMarkers();
     return signOut(auth);
   };
 
@@ -64,19 +166,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (cancelled) return;
       setUser(currentUser);
       setLoading(false);
-      if (!currentUser) return;
-      const raw = sessionStorage.getItem(GOOGLE_RETURN_PATH_KEY);
-      if (!raw) return;
-      sessionStorage.removeItem(GOOGLE_RETURN_PATH_KEY);
-      const dest = safeInternalPath(raw, '/admin');
-      if (window.location.pathname !== dest) {
-        window.location.replace(dest);
+      if (currentUser) {
+        consumeGoogleReturnIfSignedIn(currentUser);
       }
     });
 
     void (async () => {
       try {
-        await getRedirectResult(auth);
+        const result = await getRedirectResult(auth);
+        if (result?.user) {
+          consumeGoogleReturnIfSignedIn(result.user);
+        }
       } catch {
         /* redirect 未完成或已處理過時可忽略 */
       }
