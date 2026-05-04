@@ -28,26 +28,27 @@ export type EcpayCheckoutResponse = {
   totalAmount: number;
 };
 
-const STAGE_CONFIG: EcpayConfig = {
-  merchantId: '3002607',
-  hashKey: 'pwFHCqoQZGmho4w6',
-  hashIv: 'EkRm7iFT261dpevs',
-  checkoutUrl: 'https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5',
-};
-
 function getEcpayConfig(): EcpayConfig {
   const isProduction = process.env.ECPAY_STAGE === 'false';
 
   return {
-    merchantId: process.env.ECPAY_MERCHANT_ID || STAGE_CONFIG.merchantId,
-    hashKey: process.env.ECPAY_HASH_KEY || STAGE_CONFIG.hashKey,
-    hashIv: process.env.ECPAY_HASH_IV || STAGE_CONFIG.hashIv,
+    merchantId: process.env.ECPAY_MERCHANT_ID || '',
+    hashKey: process.env.ECPAY_HASH_KEY || '',
+    hashIv: process.env.ECPAY_HASH_IV || '',
     checkoutUrl:
       process.env.ECPAY_CHECKOUT_URL ||
       (isProduction
         ? 'https://payment.ecpay.com.tw/Cashier/AioCheckOut/V5'
-        : STAGE_CONFIG.checkoutUrl),
+        : 'https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5'),
   };
+}
+
+export function verifyCheckMacValue(fields: Record<string, string>) {
+  const config = getEcpayConfig();
+  if (!fields.CheckMacValue) return false;
+  
+  const calculated = createCheckMacValue(fields, config);
+  return calculated === fields.CheckMacValue;
 }
 
 function ecpayEncode(value: string) {

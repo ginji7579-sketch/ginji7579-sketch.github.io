@@ -1,6 +1,9 @@
+import { verifyCheckMacValue } from '../../../server/payments/ecpay';
+
 export default async function handler(req: any, res: any) {
+  const isValid = verifyCheckMacValue(req.body);
   const rtnCode = String(req.body?.RtnCode || '');
-  const isPaid = rtnCode === '1';
+  const isPaid = isValid && rtnCode === '1';
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.status(200).send(`<!doctype html>

@@ -4,13 +4,13 @@ import { getAuth } from "firebase/auth";
 
 // 你的 Firebase 設定（從環境變數讀取或直接寫，建議用環境變數）
 const firebaseConfig = {
-  apiKey: "AIzaSyDFXwMrwq8g_aYDzArFRlJKHwDGqAt3ZBY",
-  authDomain: "dequan-m.firebaseapp.com",
-  projectId: "dequan-m",
-  storageBucket: "dequan-m.firebasestorage.app",
-  messagingSenderId: "562809278262",
-  appId: "1:562809278262:web:7f763a60969761ba3d2d97",
-  measurementId: "G-VHWWJLVYTB"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // 初始化 Firebase app

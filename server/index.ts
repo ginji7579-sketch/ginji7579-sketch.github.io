@@ -2,7 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
-import { createEcpayCheckout } from "./payments/ecpay";
+import { createEcpayCheckout, verifyCheckMacValue } from "./payments/ecpay";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,7 +12,16 @@ async function startServer() {
   const server = createServer(app);
 
   app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
+  app.use(express.urlencoded({ extended: true }));
+
+  // Basic security headers
+  app.use((_req, res, next) => {
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader("X-XSS-Protection", "1; mode=block");
+    res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    next();
+  });
 
   app.post("/api/payments/ecpay/checkout", (req, res) => {
     try {
@@ -24,13 +33,19 @@ async function startServer() {
     }
   });
 
-  app.post("/api/payments/ecpay/return", (_req, res) => {
+  app.post("/api/payments/ecpay/return", (req, res) => {
+    if (!verifyCheckMacValue(req.body)) {
+      console.error("Ecpay return verification failed");
+      return res.status(400).send("Verification failed");
+    }
+    // TODO: Update order status in database
     res.type("text/plain").send("1|OK");
   });
 
   app.post("/api/payments/ecpay/result", (req, res) => {
+    const isValid = verifyCheckMacValue(req.body);
     const rtnCode = String(req.body?.RtnCode || "");
-    const isPaid = rtnCode === "1";
+    const isPaid = isValid && rtnCode === "1";
 
     res.type("html").send(`<!doctype html>
       <html lang="zh-Hant">
