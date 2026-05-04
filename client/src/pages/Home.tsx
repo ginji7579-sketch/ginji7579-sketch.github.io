@@ -5,7 +5,6 @@ import ServicesSection from '@/components/ServicesSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import CartDrawer from '@/components/CartDrawer';
-import { CartProvider } from '@/contexts/CartContext';
 
 /**
  * Home Page - Main landing page
@@ -16,18 +15,16 @@ import { CartProvider } from '@/contexts/CartContext';
  */
 export default function Home() {
   return (
-    <CartProvider>
-      <div className="min-h-screen flex flex-col bg-white">
-        <Header />
-        <main className="flex-grow">
-          <HeroSection />
-          <AboutSection />
-          <ServicesSection />
-          <ContactSection />
-        </main>
-        <Footer />
-        <CartDrawer />
-      </div>
-    </CartProvider>
+    <div className="min-h-screen flex flex-col bg-white">
+      <Header />
+      <main className="flex-grow">
+        <HeroSection />
+        <AboutSection />
+        <ServicesSection />
+        <ContactSection />
+      </main>
+      <Footer />
+      <CartDrawer />
+    </div>
   );
 }
