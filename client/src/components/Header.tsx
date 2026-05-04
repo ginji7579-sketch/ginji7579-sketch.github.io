@@ -25,6 +25,8 @@ export default function Header() {
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310519663070144485/aSt5pv6mkSff6ez8cLV8EV/logo_ff0fe2ce.jpg"
                 alt="德全有限公司 Logo"
+                loading="lazy"
+                decoding="async"
                 className="h-12 w-auto"
               />
               <div className="hidden sm:flex flex-col">

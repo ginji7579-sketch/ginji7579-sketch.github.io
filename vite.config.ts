@@ -220,6 +220,30 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // UI 組件庫分割
+          radix: ["@radix-ui/react-dialog", "@radix-ui/react-dropdown-menu", "@radix-ui/react-select"],
+          lucide: ["lucide-react"],
+          // 頁面組件分割
+          admin: ["@/pages/Admin"],
+          auth: ["@/pages/Login", "@/pages/Register"],
+          // 第三方庫分割
+          firebase: ["firebase/app", "firebase/auth"],
+        },
+      },
+    },
+    // 增加 chunk 大小限制警告
+    chunkSizeWarningLimit: 1000,
+    // 產生 source map 用於調試
+    sourcemap: false,
   },
   server: {
     port: 3000,

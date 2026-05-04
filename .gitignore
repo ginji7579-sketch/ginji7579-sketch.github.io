@@ -2,7 +2,27 @@ node_modules/
 .DS_Store
 dist/
 .env
+.env.local
+.env.*.local
 client/src/lib/.env.local
 
 # Debug / local telemetry — may contain tokens, PII, API traffic
 .manus-logs/
+
+# IDE specific files
+.vscode/settings.json
+.idea/
+
+# OS-specific files  
+.DS_Store
+Thumbs.db
+
+# Build output
+build/
+dist/
+.next/
+
+# Dependency directories
+npm-debug.log
+yarn-error.log
+pnpm-debug.log

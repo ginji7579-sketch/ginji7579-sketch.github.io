@@ -1,4 +1,20 @@
 
+import { lazy, Suspense } from 'react';
+
+const HeroImage = lazy(() => Promise.resolve({
+  default: () => (
+    <div className="relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-orange-400/10 rounded-full blur-3xl"></div>
+      <img
+        src="https://d2xsxph8kpxj0f.cloudfront.net/310519663070144485/aSt5pv6mkSff6ez8cLV8EV/logo_ff0fe2ce.jpg"
+        alt="德全有限公司 Logo"
+        loading="lazy"
+        decoding="async"
+        className="relative w-80 h-80 object-contain drop-shadow-lg hover:scale-110 transition-transform duration-500"
+      />
+    </div>
+  )
+}));
 
 export default function HeroSection() {
   return (
@@ -8,7 +24,8 @@ export default function HeroSection() {
         backgroundImage: `url('https://d2xsxph8kpxj0f.cloudfront.net/310519663070144485/aSt5pv6mkSff6ez8cLV8EV/hero-background-oMnaxMrGRdxnRLxrxfr5gb.webp')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
+        // 移除 backgroundAttachment: 'fixed' - 手機效能差
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <div className="absolute inset-0 bg-white/85 md:bg-gradient-to-r md:from-white/95 md:to-transparent"></div>
@@ -27,26 +44,15 @@ export default function HeroSection() {
                 我們在資訊破碎的時代中，不虛華、不妥協，讓每一個選擇都值得被信賴。
               </p>
             </div>
-
-
-
-
           </div>
 
           <div className="hidden md:flex justify-center items-center animate-fade-in">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-orange-400/10 rounded-full blur-3xl"></div>
-              <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663070144485/aSt5pv6mkSff6ez8cLV8EV/logo_ff0fe2ce.jpg"
-                alt="德全有限公司 Logo"
-                className="relative w-80 h-80 object-contain drop-shadow-lg hover:scale-110 transition-transform duration-500"
-              />
-            </div>
+            <Suspense fallback={<div className="w-80 h-80" />}>
+              <HeroImage />
+            </Suspense>
           </div>
         </div>
       </div>
-
-
     </section>
   );
 }
