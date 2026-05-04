@@ -45,8 +45,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
     let cancelled = false;
+    // 必須先訂閱 onAuthStateChanged，不可先 await getRedirectResult：
+    // 在部分 Safari／WebView 上 getRedirectResult 可能長時間不 resolve，
+    // 會導致 loading 永遠 true、整站 children 不渲染（白畫面）。
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (cancelled) return;
+      setUser(currentUser);
+      setLoading(false);
+    });
 
     void (async () => {
       try {
@@ -54,16 +61,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch {
         /* redirect 未完成或已處理過時可忽略 */
       }
-      if (cancelled) return;
-      unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-        setLoading(false);
-      });
     })();
+
+    const failSafe = window.setTimeout(() => {
+      if (!cancelled) setLoading(false);
+    }, 12_000);
 
     return () => {
       cancelled = true;
-      unsubscribe?.();
+      window.clearTimeout(failSafe);
+      unsubscribe();
     };
   }, []);
 
