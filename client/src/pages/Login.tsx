@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { useLocation, Link } from 'wouter';
 import { useAuth } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
@@ -7,13 +7,19 @@ import Footer from '@/components/Footer';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [, setLocation] = useLocation();
   const { login } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (login(email, password)) {
+    setError('');
+
+    try {
+      await login(email, password);
       setLocation('/');
+    } catch (err: any) {
+      setError(err.message || '登入失敗，請稍後再試');
     }
   };
 
@@ -26,6 +32,11 @@ export default function Login() {
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold mb-2" style={{ color: '#2B8A8A' }}>會員登入</h1>
             <p className="text-[#2C3E50] text-sm">歡迎回到德全，請輸入您的帳號密碼</p>
+            {error && (
+              <p className="mt-4 text-sm text-red-600" role="alert">
+                {error}
+              </p>
+            )}
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
