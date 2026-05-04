@@ -31,7 +31,14 @@ export default function Login() {
         setLocation('/admin');
       }
     } catch (err: any) {
-      setError(err.message || 'Google 登入失敗，請稍後再試');
+      const code = err?.code ?? '';
+      if (code === 'auth/argument-error') {
+        setError(
+          'Firebase 設定異常（常見：Vercel 缺少 VITE_FIREBASE_* 或金鑰為空）。請到 Vercel 專案 Environment Variables 檢查後重新部署。'
+        );
+      } else {
+        setError(err.message || 'Google 登入失敗，請稍後再試');
+      }
     }
   };
 
