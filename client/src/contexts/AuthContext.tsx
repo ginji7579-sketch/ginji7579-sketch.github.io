@@ -12,11 +12,19 @@ import {
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 
+/** Google redirect 回來後整頁重載，不能用 React state 導向；用 sessionStorage 記目標路徑。 */
+const GOOGLE_RETURN_PATH_KEY = 'dequan_google_auth_return_path';
+
+function safeInternalPath(path: string, fallback: string) {
+  if (!path.startsWith('/') || path.startsWith('//')) return fallback;
+  return path;
+}
+
 interface AuthContextType {
   user: User | null;
   signup: (email: string, password: string) => Promise<any>;
   login: (email: string, password: string) => Promise<any>;
-  loginWithGoogle: () => Promise<any>;
+  loginWithGoogle: (returnTo?: string) => Promise<void>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
@@ -35,12 +43,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const loginWithGoogle = () => {
+  const loginWithGoogle = (returnTo: string = '/admin') => {
+    const path = safeInternalPath(returnTo, '/admin');
+    sessionStorage.setItem(GOOGLE_RETURN_PATH_KEY, path);
     const provider = new GoogleAuthProvider();
     return signInWithRedirect(auth, provider);
   };
 
   const logout = () => {
+    sessionStorage.removeItem(GOOGLE_RETURN_PATH_KEY);
     return signOut(auth);
   };
 
@@ -53,6 +64,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (cancelled) return;
       setUser(currentUser);
       setLoading(false);
+      if (!currentUser) return;
+      const raw = sessionStorage.getItem(GOOGLE_RETURN_PATH_KEY);
+      if (!raw) return;
+      sessionStorage.removeItem(GOOGLE_RETURN_PATH_KEY);
+      const dest = safeInternalPath(raw, '/admin');
+      if (window.location.pathname !== dest) {
+        window.location.replace(dest);
+      }
     });
 
     void (async () => {
