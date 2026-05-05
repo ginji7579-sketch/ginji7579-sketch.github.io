@@ -62,7 +62,9 @@ export default function Footer() {
               </div>
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: '#F5A623' }} />
-                <span style={{ color: '#D1D5DB' }}>台北市信義區松德路65號11樓之2</span>
+                <a href="https://maps.google.com/?q=台北市信義區松德路65號11樓之2" target="_blank" rel="noopener noreferrer" className="transition-colors" style={{ color: '#D1D5DB' }} onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#D1D5DB'}>
+                  台北市信義區松德路65號11樓之2
+                </a>
               </div>
             </div>
           </div>

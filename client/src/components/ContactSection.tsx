@@ -84,7 +84,7 @@ export default function ContactSection() {
       icon: MapPin,
       label: '地址',
       value: '台北市信義區松德路65號11樓之2',
-      href: '#',
+      href: 'https://maps.google.com/?q=台北市信義區松德路65號11樓之2',
     },
   ];
 
@@ -118,6 +118,8 @@ export default function ContactSection() {
                     <p className="font-semibold mb-1" style={{ color: '#2C3E50' }}>{info.label}</p>
                     <a
                       href={info.href}
+                      target={info.href.startsWith('http') ? "_blank" : undefined}
+                      rel={info.href.startsWith('http') ? "noopener noreferrer" : undefined}
                       className="transition-colors"
                       style={{ color: 'rgba(44, 62, 80, 0.7)' }}
                       onMouseEnter={(e) => e.currentTarget.style.color = '#2B8A8A'}

@@ -1,6 +1,6 @@
 // client/src/components/Signup.tsx
 import React, { useState } from 'react';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Signup() {
     const [email, setEmail] = useState('');
