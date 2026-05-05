@@ -150,17 +150,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loginWithGoogle = async (returnTo: string = '/admin') => {
     const provider = new GoogleAuthProvider();
-    // Detect LINE in-app browser which blocks popups
-    const isLineWebview = typeof navigator !== 'undefined' && /Line\/[^ ]+/i.test(navigator.userAgent);
-    const useRedirect = isLineWebview;
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+    const isLineWebview = /Line\/[^ ]+/i.test(ua);
+    const isFbIgWebview = /FBAN|FBAV|Instagram/i.test(ua);
+
+    // Google blocks OAuth from WebView (Error 403: disallowed_useragent).
+    if (isLineWebview) {
+      const currentUrl = new URL(window.location.href);
+      if (!currentUrl.searchParams.has('openExternalBrowser')) {
+        currentUrl.searchParams.set('openExternalBrowser', '1');
+        window.location.href = currentUrl.toString();
+        // 永遠 pending，讓畫面停住等待跳轉
+        return new Promise<'redirect'>(() => {});
+      }
+    } else if (isFbIgWebview) {
+      alert("為保護您的帳號安全，Google 不允許在應用程式內建的瀏覽器登入。\n\n請點擊右上角選單（⋯ 或 ⋮），選擇「以系統預設瀏覽器開啟」（例如 Safari 或 Chrome）後，再試一次登入！");
+      throw new Error("WebView not supported");
+    }
     
     try {
-      if (useRedirect) {
-        // Persist return path before redirect
-        persistGoogleReturnPath(returnTo);
-        await signInWithRedirect(auth, provider);
-        return "redirect" as const;
-      }
       await signInWithPopup(auth, provider);
       clearGoogleReturnMarkers();
       return 'popup' as const;
