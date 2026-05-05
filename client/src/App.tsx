@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
+import Checkout from "./pages/Checkout";
 
 /**
  * App Component - Main application router and theme provider
@@ -24,6 +25,7 @@ function Router() {
       <Route path={"/login"} component={Login} />
       <Route path={"/register"} component={Register} />
       <Route path={"/admin"} component={Admin} />
+      <Route path={"/checkout"} component={Checkout} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

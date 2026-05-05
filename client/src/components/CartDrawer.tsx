@@ -1,5 +1,6 @@
 import { CreditCard, Loader2, Mail, Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { useLocation } from 'wouter';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,6 +24,7 @@ function formatPrice(price?: number) {
 }
 
 export default function CartDrawer() {
+  const [, setLocation] = useLocation();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const {
     items,
@@ -56,44 +58,9 @@ export default function CartDrawer() {
     '服務購物車詢價'
   )}&body=${encodeURIComponent(mailBody)}`;
 
-  const handleCheckout = async () => {
-    setIsCheckingOut(true);
-
-    try {
-      const response = await fetch('/api/payments/ecpay/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          items: items.map(({ id, quantity }) => ({ id, quantity })),
-        }),
-      });
-      const payload = await response.json();
-
-      if (!response.ok) {
-        throw new Error(payload.message || '建立付款單失敗');
-      }
-
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = payload.action;
-      form.style.display = 'none';
-
-      Object.entries(payload.fields as Record<string, string>).forEach(([name, value]) => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = name;
-        input.value = value;
-        form.appendChild(input);
-      });
-
-      document.body.appendChild(form);
-      form.submit();
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : '建立付款單失敗');
-      setIsCheckingOut(false);
-    }
+  const handleCheckout = () => {
+    setCartOpen(false);
+    setLocation('/checkout');
   };
 
   return (
