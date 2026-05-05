@@ -26,10 +26,20 @@ export default function ContactSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Honeypot check
+    const form = e.target as HTMLFormElement;
+    const botField = form.querySelector('input[name="_honey"]') as HTMLInputElement;
+    if (botField && botField.value) {
+      console.warn('Bot detected');
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
       // 使用 formsubmit.co 免費轉寄服務
+      // 加入更多安全與配置參數
       await fetch('https://formsubmit.co/ajax/ginji7579@gmail.com', {
         method: 'POST',
         headers: {
@@ -38,6 +48,8 @@ export default function ContactSection() {
         },
         body: JSON.stringify({
           _subject: `網站聯絡表單: ${formData.subject}`,
+          _template: 'box', // 使用更好看的郵件模板
+          _captcha: 'true', // 強制開啟驗證 (預設即為 true)
           ...formData
         })
       });
@@ -143,6 +155,9 @@ export default function ContactSection() {
 
           <div className="lg:col-span-2">
             <form onSubmit={handleSubmit} className="space-y-6 p-8 rounded-xl" style={{ backgroundColor: '#F5F1E8' }}>
+              {/* Honeypot field to prevent spam */}
+              <input type="text" name="_honey" style={{ display: 'none' }} />
+              
               {submitted && (
                 <div className="p-4 rounded-lg" style={{ backgroundColor: '#F0FDF4', borderColor: '#DCFCE7', borderWidth: '1px' }}>
                   <p className="font-semibold" style={{ color: '#166534' }}>

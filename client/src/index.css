@@ -162,6 +162,26 @@
   .btn-primary:hover {
     opacity: 0.9;
   }
+
+  .text-brand-primary {
+    color: #2B8A8A;
+  }
+
+  .text-brand-secondary {
+    color: #F5A623;
+  }
+
+  .text-brand-dark {
+    color: #2C3E50;
+  }
+
+  .bg-brand-light {
+    background-color: #F5F1E8;
+  }
+
+  .border-brand-muted {
+    border-color: #E8E6E1;
+  }
   
   .btn-secondary {
     background-color: #F5A623;

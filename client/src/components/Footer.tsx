@@ -74,10 +74,10 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center text-sm" style={{ color: '#9CA3AF' }}>
             <p>&copy; 德全有限公司 (DEQUAN-M CO.LTD). 版權所有。</p>
             <div className="flex gap-6 mt-4 md:mt-0">
-              <a href="#" className="transition-colors" onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#9CA3AF'}>
+              <a href="/privacy" className="transition-colors" onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#9CA3AF'}>
                 隱私政策
               </a>
-              <a href="#" className="transition-colors" onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#9CA3AF'}>
+              <a href="/privacy" className="transition-colors" onMouseEnter={(e) => e.currentTarget.style.color = '#F5A623'} onMouseLeave={(e) => e.currentTarget.style.color = '#9CA3AF'}>
                 服務條款
               </a>
             </div>

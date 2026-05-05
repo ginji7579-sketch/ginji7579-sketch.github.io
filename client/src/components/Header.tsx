@@ -17,11 +17,11 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm" style={{ borderBottom: '1px solid #E8E6E1' }}>
+    <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-brand-muted">
       <div className="container">
         <div className="flex items-center justify-between h-20">
           <Link href="/">
-            <a className="flex items-center gap-3 transition-opacity" style={{ opacity: 1 }} onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'} onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}>
+            <a className="flex items-center gap-3 transition-opacity opacity-100 hover:opacity-80">
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310519663070144485/aSt5pv6mkSff6ez8cLV8EV/logo_ff0fe2ce.jpg"
                 alt="德全有限公司 Logo"
@@ -30,8 +30,8 @@ export default function Header() {
                 className="h-12 w-auto"
               />
               <div className="hidden sm:flex flex-col">
-                <span className="font-bold text-lg" style={{ color: '#2B8A8A' }}>德全</span>
-                <span className="text-xs" style={{ color: '#2C3E50' }}>DEQUAN-M CO.LTD</span>
+                <span className="font-bold text-lg text-brand-primary">德全</span>
+                <span className="text-xs text-brand-dark">DEQUAN-M CO.LTD</span>
               </div>
             </a>
           </Link>

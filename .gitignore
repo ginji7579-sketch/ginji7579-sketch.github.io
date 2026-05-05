@@ -10,7 +10,6 @@ client/src/lib/.env.local
 .manus-logs/
 
 # IDE specific files
-.vscode/settings.json
 .idea/
 
 # OS-specific files  
