@@ -150,7 +150,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loginWithGoogle = async (returnTo: string = '/admin') => {
     const provider = new GoogleAuthProvider();
+    // Detect LINE in-app browser which blocks popups
+    const isLineWebview = typeof navigator !== 'undefined' && /Line\/[^ ]+/i.test(navigator.userAgent);
+    const useRedirect = isLineWebview;
+    
     try {
+      if (useRedirect) {
+        // Persist return path before redirect
+        persistGoogleReturnPath(returnTo);
+        await signInWithRedirect(auth, provider);
+        return "redirect" as const;
+      }
       await signInWithPopup(auth, provider);
       clearGoogleReturnMarkers();
       return 'popup' as const;
