@@ -18,33 +18,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Noto+Sans+TC:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <!-- 性能優化: font-display=swap 用於加快頁面顯示 -->
-    <style>
-      /* 立即顯示系統字體，Google Fonts 加載後替換 */
-      body {
-        font-display: swap;
-      }
-      /* 減少 CLS - Cumulative Layout Shift */
-      img {
-        aspect-ratio: auto;
-      }
-    </style>
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script type="module">
-      const analyticsEndpoint = import.meta.env.VITE_ANALYTICS_ENDPOINT;
-      const analyticsWebsiteId = import.meta.env.VITE_ANALYTICS_WEBSITE_ID;
-
-      if (analyticsEndpoint && analyticsWebsiteId) {
-        const script = document.createElement("script");
-        script.defer = true;
-        script.src = `${analyticsEndpoint}/umami`;
-        script.dataset.websiteId = analyticsWebsiteId;
-        document.body.appendChild(script);
-      }
-    </script>
   </body>
 
 </html>
