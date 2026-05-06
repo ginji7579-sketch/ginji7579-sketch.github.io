@@ -151,8 +151,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginWithGoogle = async (returnTo: string = '/admin') => {
     const provider = new GoogleAuthProvider();
     const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
-    const isLineWebview = /Line\/[^ ]+/i.test(ua);
+    const isLineWebview = /Line/i.test(ua);
     const isFbIgWebview = /FBAN|FBAV|Instagram/i.test(ua);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
 
     // Google blocks OAuth from WebView (Error 403: disallowed_useragent).
     if (isLineWebview) {
@@ -160,7 +161,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!currentUrl.searchParams.has('openExternalBrowser')) {
         currentUrl.searchParams.set('openExternalBrowser', '1');
         window.location.href = currentUrl.toString();
-        // 永遠 pending，讓畫面停住等待跳轉
         return new Promise<'redirect'>(() => {});
       }
     } else if (isFbIgWebview) {
@@ -169,6 +169,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     
     try {
+      // 在行動裝置上，如果不是 LINE/FB，先嘗試 popup，失敗則自動切換為 redirect
       await signInWithPopup(auth, provider);
       clearGoogleReturnMarkers();
       return 'popup' as const;
@@ -177,9 +178,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         e && typeof e === "object" && "code" in e
           ? String((e as { code: string }).code)
           : "";
+      
+      // 在行動裝置上，任何「不支援」或「內部錯誤」通常都暗示應該改用 Redirect
       if (
         code === "auth/popup-blocked" ||
-        code === "auth/operation-not-supported-in-this-environment"
+        code === "auth/operation-not-supported-in-this-environment" ||
+        (isMobile && (code === "auth/internal-error" || code === "auth/network-request-failed"))
       ) {
         persistGoogleReturnPath(returnTo);
         await signInWithRedirect(auth, provider);
